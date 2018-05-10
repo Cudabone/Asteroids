@@ -10,7 +10,7 @@ Ship::Ship()
 	shape.setPoint(2, sf::Vector2f(2, 3));
 	setOrigin(1, 1.5);
 	setScale(30, 30);
-	setPosition(width / 2, height / 2);
+ 	setPosition(width / 2, height / 2);
 	//setRotation(0.0f);
 }
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -7,9 +7,6 @@
 *.userosscache
 *.sln.docstates
 
-#My Additional Libraries (SFML)
-*.lib
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -262,3 +259,17 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Ignore SFML Dynamic Link Libraries
+/AsteroidsGame/*.dll
+#/AsteroidsGame/openal32.dll
+#/AsteroidsGame/sfml-audio-2.dll
+#/AsteroidsGame/sfml-audio-d-2.dll
+#/AsteroidsGame/sfml-graphics-2.dll
+#/AsteroidsGame/sfml-graphics-d-2.dll
+#/AsteroidsGame/sfml-network-2.dll
+#/AsteroidsGame/sfml-network-d-2.dll
+#/AsteroidsGame/sfml-system-2.dll
+#/AsteroidsGame/sfml-system-d-2.dll
+#/AsteroidsGame/sfml-window-2.dll
+#/AsteroidsGame/sfml-window-d-2.dll

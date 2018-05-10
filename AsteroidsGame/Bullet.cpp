@@ -1,24 +1,24 @@
 #include "stdafx.h"
 #include "Bullet.hpp"
 #include "constants.hpp"
-
-//If given angle, no calculation, if given unit vector must do arctan/arccos/arcsinh
+#include "util.hpp"
+constexpr float toRadians(const float degrees)
+{
+	return degrees * PI_TO_DEG;
+}
 //angle in degrees
-Bullet::Bullet(const sf::Vector2f &pos, float angle)
+Bullet::Bullet(const sf::Vector2f &pos, float degrees)
 	:line(sf::Vector2f(bullet_width, bullet_height))
 {
-	line.setOrigin(bullet_width / 2, bullet_height / 2);
-	line.setPosition(pos);
-	line.setRotation(angle);
-	line.setScale(5, 5);
-	this.velocity()
+	setOrigin(bullet_width / 2, bullet_height / 2);
+	setPosition(pos);
+	setRotation(degrees);
+	setScale(5, 5);
+	velocity = sf::Vector2f(bullet_velocity * sin(toRadians(degrees)), 
+							bullet_velocity * -cos(toRadians(degrees)));
 }
 void Bullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 	target.draw(line, states);
-}
-sf::Vector2f &Bullet::getVelocity()
-{
-	return velocity;
 }

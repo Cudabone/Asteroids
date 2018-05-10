@@ -5,13 +5,15 @@
 class Bullet : public sf::Drawable, public sf::Transformable
 {
 public:
-	Bullet(const sf::Vector2f &pos, float angle);
-	sf::Vector2f &getVelocity();
-
-	sf::RectangleShape line;
+	Bullet(const sf::Vector2f &pos, float degrees);
+	sf::Vector2f &getVelocity()
+	{
+		return velocity;
+	}
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
 	sf::Vector2f velocity;
+	sf::RectangleShape line;
 };
 #endif
