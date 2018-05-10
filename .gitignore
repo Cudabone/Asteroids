@@ -262,14 +262,3 @@ __pycache__/
 
 # Ignore SFML Dynamic Link Libraries
 /AsteroidsGame/*.dll
-#/AsteroidsGame/openal32.dll
-#/AsteroidsGame/sfml-audio-2.dll
-#/AsteroidsGame/sfml-audio-d-2.dll
-#/AsteroidsGame/sfml-graphics-2.dll
-#/AsteroidsGame/sfml-graphics-d-2.dll
-#/AsteroidsGame/sfml-network-2.dll
-#/AsteroidsGame/sfml-network-d-2.dll
-#/AsteroidsGame/sfml-system-2.dll
-#/AsteroidsGame/sfml-system-d-2.dll
-#/AsteroidsGame/sfml-window-2.dll
-#/AsteroidsGame/sfml-window-d-2.dll

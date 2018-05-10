@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Ship.hpp"
 #include "constants.hpp"
+#include "util.hpp"
 
 Ship::Ship()
 	: shape(3), velocity(0.0f,0.0f)
@@ -19,23 +20,13 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(shape, states);
 }
 
-void Ship::update()
+void Ship::update(const float elapsedTime)
 {
-	std::vector<sf::Vector2f> pts{ shape.getPoint(0),shape.getPoint(1),shape.getPoint(2) };
-	for (auto &v : pts)
-	{
-		if (v.x < 0)
-			v.x += width;
-		if (v.x > width)
-			v.x -= width;
-
-		if (v.y < 0)
-			v.y += height;
-		if (v.y > height)
-			v.y -= height;
-	}
-	for (std::size_t i = 0; i < pts.size(); ++i)
-	{
-		shape.setPoint(i, pts[i]);
-	}
+	velocity.x += sin(toRadians(getRotation()))*elapsedTime;
+	velocity.y += -cos(toRadians(getRotation()))*elapsedTime;
+	sf::Vector2f pos = getPosition();
+	pos.x += velocity.x;
+	pos.y += velocity.y;
+	wrapPosition(pos);
+	setPosition(pos);
 }
