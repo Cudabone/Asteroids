@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <SFML/Graphics.hpp>
-#include "constants.h"
+#include "constants.hpp"
 void wrapPosition(sf::Vector2f &pos)
 {
 	if (pos.x > width) pos.x -= width;

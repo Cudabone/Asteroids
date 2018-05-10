@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.hpp"
-#include "constants.h"
+#include "constants.hpp"
 
 //If given angle, no calculation, if given unit vector must do arctan/arccos/arcsinh
 //angle in degrees
