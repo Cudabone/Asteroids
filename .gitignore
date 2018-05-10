@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 
+#My Additional Libraries (SFML)
+*.lib
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
