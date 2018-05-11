@@ -19,14 +19,19 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(shape, states);
 }
+void Ship::accelerate(const float elapsedTime)
+{
+	velocity.x += ship_acceleration * sin(toRadians(getRotation()))*elapsedTime;
+	velocity.y += ship_acceleration * -cos(toRadians(getRotation()))*elapsedTime;
+}
 
 void Ship::update(const float elapsedTime)
 {
-	velocity.x += sin(toRadians(getRotation()))*elapsedTime;
-	velocity.y += -cos(toRadians(getRotation()))*elapsedTime;
 	sf::Vector2f pos = getPosition();
-	pos.x += velocity.x;
-	pos.y += velocity.y;
+	//pos.x += 0.5*velocity.x*elapsedTime + velocity.x;
+	//pos.y += 0.5*velocity.y*elapsedTime + velocity.y;
+	pos.x += velocity.x*elapsedTime - 0.5*ship_acceleration*square(elapsedTime);
+	pos.y += velocity.y*elapsedTime - 0.5*ship_acceleration*square(elapsedTime);
 	wrapPosition(pos);
 	setPosition(pos);
 }
