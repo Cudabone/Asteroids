@@ -8,7 +8,30 @@ Asteroid::Asteroid()
 	velocity(static_cast<float>(RNG(-.1f*width,.1f*width)()), static_cast<float>(RNG(-.1f*width,.1f*width)()))
 {
 	setOrigin(asteroid_radius, asteroid_radius);
-	setPosition(sf::Vector2f(static_cast<float>(RNG(0, width)()), static_cast<float>(RNG(0, height)())));
+	//setPosition(sf::Vector2f(static_cast<float>(RNG(0, width)()), static_cast<float>(RNG(0, height)())));
+
+	float x = static_cast<float>(RNG(0, width)());
+	float y;
+	if (x > center_x - safety_radius && x < center_x + safety_radius)
+	{
+		int interval;
+		if (RNG(0, 1)() == 0)
+		{
+			//"Top" half of circle
+			interval = sqrt(square(safety_radius) - square(x - center_x)) + center_y;
+			y = static_cast<float>(RNG(interval, height)());
+		}
+		else
+		{
+			//"Bottom" half of circle
+			interval = -sqrt(square(safety_radius) - square(x - center_x)) + center_y;
+			y = static_cast<float>(RNG(0, interval)());
+		}
+	}
+	else
+		y = static_cast<float>(RNG(0, height)());
+
+	setPosition(x, y);
 }
 
 void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const

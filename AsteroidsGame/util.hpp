@@ -18,6 +18,7 @@ struct RNG
 	RNG(int start, int end)
 		: rd(), gen(rd()), dist(start, end)
 	{}
+	
 	decltype(auto) operator() ()
 	{
 		return dist(gen);
