@@ -32,7 +32,7 @@ private:
 //Maths
 constexpr float toRadians(const float degrees)
 {
-	return degrees * PI_TO_DEG;
+	return degrees * DEG_TO_RAD;
 }
 inline float square(const float &f)
 {

@@ -6,7 +6,7 @@ constexpr int height = 1080;
 
 //Math
 constexpr float PI = 3.1415926f;
-constexpr float PI_TO_DEG = PI / 180.0f;
+constexpr float DEG_TO_RAD = PI / 180.0f;
 
 //Ship
 constexpr float ship_acceleration = 0.5*width;
@@ -19,10 +19,10 @@ constexpr float fire_rate = 0.15f; // seconds per bullet
 
 //Asteroid
 constexpr float asteroid_radius = 0.05f * width;
-
+constexpr float asteroid_max_velocity = .1f*width;
 constexpr float center_x = width / 2;
 constexpr float center_y = height / 2;
 
 //Radius around ship that asteroids cannot spawn
-constexpr float safety_radius = width * .05f; 
+constexpr float safety_radius = (height / 2) * .1f; 
 #endif

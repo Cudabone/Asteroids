@@ -5,7 +5,8 @@
 
 Asteroid::Asteroid()
 	:shape(asteroid_radius), 
-	velocity(static_cast<float>(RNG(-.1f*width,.1f*width)()), static_cast<float>(RNG(-.1f*width,.1f*width)()))
+	velocity(static_cast<float>(RNG(-asteroid_max_velocity, asteroid_max_velocity)()),
+			 static_cast<float>(RNG(-asteroid_max_velocity, asteroid_max_velocity)()))
 {
 	setOrigin(asteroid_radius, asteroid_radius);
 	//setPosition(sf::Vector2f(static_cast<float>(RNG(0, width)()), static_cast<float>(RNG(0, height)())));
@@ -29,7 +30,9 @@ Asteroid::Asteroid()
 		}
 	}
 	else
+	{
 		y = static_cast<float>(RNG(0, height)());
+	}
 
 	setPosition(x, y);
 }
@@ -44,7 +47,7 @@ void Asteroid::update(const float elapsedTime)
 {
 	sf::Vector2f pos = getPosition();
 	pos.x += velocity.x * elapsedTime;
-	pos.y += velocity.x * elapsedTime;
+	pos.y += velocity.y * elapsedTime;
 	wrapPosition(pos);
 	setPosition(pos);
 }
