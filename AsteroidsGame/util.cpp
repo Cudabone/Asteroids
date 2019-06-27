@@ -3,8 +3,8 @@
 #include "constants.h"
 
 //Static members of RNG class
-std::random_device RNG::rd;
-std::mt19937 RNG::gen(rd());
+
+std::mt19937 Random::gen;
 
 void wrapPosition(sf::Vector2f &pos)
 {

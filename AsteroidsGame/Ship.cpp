@@ -29,8 +29,8 @@ void Ship::update(const float elapsedTime)
 	sf::Vector2f pos = getPosition();
 	//pos.x += 0.5*velocity.x*elapsedTime + velocity.x;
 	//pos.y += 0.5*velocity.y*elapsedTime + velocity.y;
-	pos.x += velocity.x*elapsedTime - 0.5*ship_acceleration*square(elapsedTime);
-	pos.y += velocity.y*elapsedTime - 0.5*ship_acceleration*square(elapsedTime);
+	pos.x += velocity.x*elapsedTime - 0.5f*ship_acceleration*square(elapsedTime);
+	pos.y += velocity.y*elapsedTime - 0.5f*ship_acceleration*square(elapsedTime);
 	wrapPosition(pos);
 	setPosition(pos);
 }

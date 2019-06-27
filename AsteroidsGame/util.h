@@ -12,22 +12,23 @@ constexpr rational reduce(rational r);
 struct aspect_ratio;
 
 //Random Number generator
-struct RNG
+struct Random
 {
-	
-	RNG(int start, int end)
-		: dist(start, end)
-	{}
-	
-	decltype(auto) operator() ()
+	static float Get( float start, float end )
 	{
-		return dist(gen);
+		std::uniform_real_distribution<float> dist( start, end );
+		return dist( gen );
+	}
+
+	static int Get( int start, int end )
+	{
+		std::uniform_int_distribution<> dist( start, end );
+		return dist( gen );
 	}
 
 private:
-	static std::random_device rd; //non-deterministic random seed
+	//static std::random_device rd; //non-deterministic random seed
 	static std::mt19937 gen; //Generator
-	std::uniform_int_distribution<> dist; // All numbers equally likely
 };
 
 //Maths
