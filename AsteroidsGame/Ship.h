@@ -1,5 +1,4 @@
-#ifndef SHIP_HPP
-#define SHIP_HPP
+#pragma once
 #include <SFML/Graphics.hpp>
 
 class Ship : public sf::Drawable , public sf::Transformable
@@ -19,4 +18,3 @@ private:
 	sf::ConvexShape shape;
 	sf::Vector2f velocity;
 };
-#endif

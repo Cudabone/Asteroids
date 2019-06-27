@@ -1,7 +1,6 @@
-#include "stdafx.h"
-#include "Ship.hpp"
-#include "constants.hpp"
-#include "util.hpp"
+#include "Ship.h"
+#include "constants.h"
+#include "util.h"
 
 Ship::Ship()
 	: shape(3), velocity(0.0f,0.0f)

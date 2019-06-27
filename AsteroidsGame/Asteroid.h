@@ -1,5 +1,4 @@
-#ifndef ASTEROID_H
-#define ASTEROID_H
+#pragma once
 #include <SFML/Graphics.hpp>
 class Asteroid : public sf::Drawable, public sf::Transformable
 {
@@ -18,4 +17,3 @@ private:
 	sf::CircleShape shape;
 	sf::Vector2f velocity;
 };
-#endif

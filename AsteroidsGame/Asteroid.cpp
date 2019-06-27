@@ -1,7 +1,6 @@
-#include "stdafx.h"
-#include "Asteroid.hpp"
-#include "constants.hpp"
-#include "util.hpp"
+#include "Asteroid.h"
+#include "constants.h"
+#include "util.h"
 
 Asteroid::Asteroid()
 	:shape(asteroid_radius), 

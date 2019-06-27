@@ -1,7 +1,6 @@
-#include "stdafx.h"
-#include "Bullet.hpp"
-#include "constants.hpp"
-#include "util.hpp"
+#include "Bullet.h"
+#include "constants.h"
+#include "util.h"
 #include <cmath>
 //angle in degrees
 Bullet::Bullet(const sf::Vector2f &pos, float degrees)

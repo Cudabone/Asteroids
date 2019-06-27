@@ -1,7 +1,10 @@
-#include "stdafx.h"
 #include <SFML/Graphics.hpp>
-#include "util.hpp"
-#include "constants.hpp"
+#include "util.h"
+#include "constants.h"
+
+//Static members of RNG class
+std::random_device RNG::rd;
+std::mt19937 RNG::gen(rd());
 
 void wrapPosition(sf::Vector2f &pos)
 {

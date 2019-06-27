@@ -1,7 +1,6 @@
-#ifndef UTIL_HPP
-#define UTIL_HPP
+#pragma once
 #include <SFML/Graphics.hpp>
-#include "constants.hpp"
+#include "constants.h"
 #include <random>
 void wrapPosition(sf::Vector2f &pos);
 //Note to self: Constexpr functions implicitly inline and inlines 
@@ -15,17 +14,19 @@ struct aspect_ratio;
 //Random Number generator
 struct RNG
 {
+	
 	RNG(int start, int end)
-		: rd(), gen(rd()), dist(start, end)
+		: dist(start, end)
 	{}
 	
 	decltype(auto) operator() ()
 	{
 		return dist(gen);
 	}
+
 private:
-	std::random_device rd; //non-deterministic random seed
-	std::mt19937 gen; //rng
+	static std::random_device rd; //non-deterministic random seed
+	static std::mt19937 gen; //Generator
 	std::uniform_int_distribution<> dist; // All numbers equally likely
 };
 
@@ -42,4 +43,7 @@ inline float distance(const sf::Vector2f &a, const sf::Vector2f &b)
 {
 	return sqrt(square(b.x - a.x) + square(b.y - a.y));
 }
-#endif
+inline float distance_squared(const sf::Vector2f &a, const sf::Vector2f &b)
+{
+	return square(b.x - a.x) + square(b.y - a.y);
+}
