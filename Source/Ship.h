@@ -10,7 +10,7 @@ public:
 	{
 		return shape.getGlobalBounds();
 	}
-	void Ship::accelerate(const float elapsedTime);
+	void accelerate(const float elapsedTime);
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
