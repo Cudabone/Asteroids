@@ -11,6 +11,8 @@ public:
 		return shape.getGlobalBounds();
 	}
 	void accelerate(const float elapsedTime);
+	void reset();
+
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

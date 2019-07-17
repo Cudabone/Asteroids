@@ -13,15 +13,24 @@ Ship::Ship()
  	setPosition(width / 2, height / 2);
 	//setRotation(0.0f);
 }
+
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 	target.draw(shape, states);
 }
+
 void Ship::accelerate(const float elapsedTime)
 {
 	velocity.x += ship_acceleration * sin(toRadians(getRotation()))*elapsedTime;
 	velocity.y += ship_acceleration * -cos(toRadians(getRotation()))*elapsedTime;
+}
+
+void Ship::reset()
+{
+	velocity = sf::Vector2f(0.0f, 0.0f);
+	setPosition(width/2,height/2);
+	setRotation(0.0f);
 }
 
 void Ship::update(const float elapsedTime)

@@ -1,5 +1,4 @@
-#ifndef BULLET_HPP
-#define BULLET_HPP
+#pragma once
 #include <SFML/Graphics.hpp>
 
 class Bullet : public sf::Drawable, public sf::Transformable
@@ -15,4 +14,3 @@ private:
 	sf::RectangleShape line;
 	sf::Vector2f velocity;
 };
-#endif

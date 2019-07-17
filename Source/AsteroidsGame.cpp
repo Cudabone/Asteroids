@@ -1,7 +1,7 @@
 ﻿// AsteroidsGame.cpp : Defines the entry point for the console application.
 //
 
-//TODO: Clean up ugly goto with restart method
+//TODO:
 // Break apart asteroids, separate them into sizes, spawn random sizes.
 // Level progression (more asteroids per level)
 // Score && Lives
@@ -23,10 +23,8 @@
 #include "util.h"
 #include "Asteroid.h"
 
-//int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 int main()
 {
-start:
 	sf::RenderWindow window(sf::VideoMode(width, height), "Asteroids");
 
 	Ship ship;
@@ -36,21 +34,22 @@ start:
 	asteroids.emplace_back();
 	asteroids.emplace_back();
 
-	//Draw Initial Objects
-	window.draw(ship);
-	for (auto &a : asteroids)
-	{
-		window.draw(a);
-	}
-
-	window.clear();
-	window.display();
 	//window.setFramerateLimit(60);
 
 	sf::Clock clock;
 	sf::Clock bullet_clock;
 	while (window.isOpen())
 	{
+		//Draw all on screen items
+		window.clear();
+		window.draw(ship);
+		for (const auto &a : asteroids)
+			window.draw(a);
+		for (const auto &b : bullets)
+			window.draw(b);
+		window.display();
+
+		//Window Close Events
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -58,6 +57,12 @@ start:
 				window.close();
 		}
 		sf::Time elapsedTime = clock.restart();
+
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			window.close();
+			break;
+		}
 
 		//Ship Movement
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -95,21 +100,6 @@ start:
 			b.update(elapsedTime.asSeconds());
 		}
 
-		//auto shipBox = ship.getGlobalBounds();
-		//auto asteroidBox = a1.getGlobalBounds();
-		//Collision Detection
-
-		//First do bounding box calc to avoid the sqrt calc
-		/*
-		if (asteroidBox.contains(shipPos.x , shipPos.y))
-		{
-			if (distance(shipPos, a1Pos) < a1.getRadius())
-			{
-				goto start;
-			}
-		}
-		*/
-		
 		for (size_t i = 0; i < bullets.size();)
 		{
 			auto& pos = bullets[i].getPosition();
@@ -148,20 +138,15 @@ start:
 			if (distance_squared(a_pos, ship.getPosition()) < square(a_radius))
 			{
 				//Game over / lose life
-				goto start;
+				ship.reset();
+				bullets.clear();
+				asteroids.clear();
+				asteroids.emplace_back();
+				asteroids.emplace_back();
+				break;
 			}
 			++a_idx;
 		}
-		
-		window.clear();
-
-		//Redraw all on screen items
-		window.draw(ship);
-		for (const auto &a : asteroids)
-			window.draw(a);
-		for (const auto &b : bullets)
-			window.draw(b);
-		window.display();
 	}
 
     return 0;
