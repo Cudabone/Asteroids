@@ -36,11 +36,12 @@ constexpr float toRadians(const float degrees)
 {
 	return degrees * DEG_TO_RAD;
 }
-inline float square(const float &f)
+template<typename T>
+inline T square(const T& t)
 {
-	return f * f;
+	return t * t;
 }
-inline float distance(const sf::Vector2f &a, const sf::Vector2f &b)
+inline float distance(const sf::Vector2f& a, const sf::Vector2f& b)
 {
 	return sqrt(square(b.x - a.x) + square(b.y - a.y));
 }

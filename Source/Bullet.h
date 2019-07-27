@@ -1,20 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class Ship : public sf::Drawable , public sf::Transformable
+class Bullet : public sf::Drawable, public sf::Transformable
 {
 public:
-	Ship();
+	Bullet(const sf::Vector2f &pos, float degrees);
+
 	void update(const float elapsedTime);
-	decltype(auto) getGlobalBounds()
-	{
-		return shape.getGlobalBounds();
-	}
-	void Ship::accelerate(const float elapsedTime);
+
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
+	
 private:
-	sf::ConvexShape shape;
+	sf::RectangleShape line;
 	sf::Vector2f velocity;
 };
