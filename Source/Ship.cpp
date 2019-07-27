@@ -11,7 +11,6 @@ Ship::Ship()
 	setOrigin(1, 1.5);
 	setScale(30, 30);
  	setPosition(width / 2, height / 2);
-	//setRotation(0.0f);
 }
 
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -28,16 +27,14 @@ void Ship::accelerate(const float elapsedTime)
 
 void Ship::reset()
 {
-	velocity = sf::Vector2f(0.0f, 0.0f);
 	setPosition(width/2,height/2);
 	setRotation(0.0f);
+	velocity = sf::Vector2f(0.0f, 0.0f);
 }
 
 void Ship::update(const float elapsedTime)
 {
 	sf::Vector2f pos = getPosition();
-	//pos.x += 0.5*velocity.x*elapsedTime + velocity.x;
-	//pos.y += 0.5*velocity.y*elapsedTime + velocity.y;
 	pos.x += velocity.x*elapsedTime - 0.5f*ship_acceleration*square(elapsedTime);
 	pos.y += velocity.y*elapsedTime - 0.5f*ship_acceleration*square(elapsedTime);
 	wrapPosition(pos);

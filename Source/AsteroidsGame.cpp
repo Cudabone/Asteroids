@@ -1,154 +1,172 @@
-﻿// AsteroidsGame.cpp : Defines the entry point for the console application.
-//
-
-//TODO:
-// Break apart asteroids, separate them into sizes, spawn random sizes.
-// Level progression (more asteroids per level)
-// Score && Lives
-// Start screen
-// High scores
 #include <SFML/Graphics.hpp>
-#include <cstddef>
-
-#include <algorithm>
-#include <cmath>
-#include <string>
-#include <iostream>
-#include <random>
-#include <vector>
-
+#include "AsteroidsGame.h"
+#include "Asteroid.h"
 #include "Ship.h"
 #include "Bullet.h"
 #include "constants.h"
 #include "util.h"
-#include "Asteroid.h"
 
-int main()
+AsteroidsGame::AsteroidsGame(sf::RenderWindow& InWindow)
+: GameState(InWindow) 
 {
-	sf::RenderWindow window(sf::VideoMode(width, height), "Asteroids");
-
-	Ship ship;
-	std::vector<Asteroid> asteroids;
-	std::vector<Bullet> bullets;
-
-	asteroids.emplace_back();
-	asteroids.emplace_back();
-
-	//window.setFramerateLimit(60);
-
-	sf::Clock clock;
-	sf::Clock bullet_clock;
-	while (window.isOpen())
-	{
-		//Draw all on screen items
-		window.clear();
-		window.draw(ship);
-		for (const auto &a : asteroids)
-			window.draw(a);
-		for (const auto &b : bullets)
-			window.draw(b);
-		window.display();
-
-		//Window Close Events
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		sf::Time elapsedTime = clock.restart();
-
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		{
-			window.close();
-			break;
-		}
-
-		//Ship Movement
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			ship.rotate(elapsedTime.asSeconds() * -turning_rate);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			ship.rotate(elapsedTime.asSeconds() * turning_rate);
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			ship.accelerate(elapsedTime.asSeconds());
-		}
-
-		//Shooting bullets
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		{
-			if (bullet_clock.getElapsedTime().asSeconds() >= fire_rate)
-			{
-				bullets.emplace_back(ship.getPosition(), ship.getRotation());
-				bullet_clock.restart();
-			}
-		}
-
-		//framerate
-		//std::cout << 1.f / elapsedTime.asSeconds() << std::endl;
-		ship.update(elapsedTime.asSeconds());
-		for (auto& a : asteroids)
-		{
-			a.update(elapsedTime.asSeconds());
-		}
-		for (auto &b : bullets)
-		{
-			b.update(elapsedTime.asSeconds());
-		}
-
-		for (size_t i = 0; i < bullets.size();)
-		{
-			auto& pos = bullets[i].getPosition();
-			if (pos.x < 0 || pos.x > width || pos.y < 0 || pos.y > height)
-			{
-				std::swap(bullets[i], bullets.back());
-				bullets.pop_back();
-			}
-			else ++i;
-		}
-
-		//Collision Detection
-		for (size_t a_idx = 0; a_idx < asteroids.size();)
-		{
-			auto &a = asteroids[a_idx];
-			auto &a_pos = a.getPosition();
-			float a_radius = a.getRadius();
-			//Bullets && Asteroids
-			for (size_t b_idx = 0; b_idx < bullets.size();)
-			{
-				auto &b = bullets[b_idx];
-				auto &b_pos = b.getPosition();
-				if (distance_squared(a_pos, b_pos) < square(a_radius))
-				{
-					//Remove bullets
-					std::swap(b, bullets.back());
-					bullets.pop_back();
-
-					//Remove asteroid
-					std::swap(a, asteroids.back());
-					asteroids.pop_back();
-				}
-				else ++b_idx;
-			}
-			//Ship && Asteroids
-			if (distance_squared(a_pos, ship.getPosition()) < square(a_radius))
-			{
-				//Game over / lose life
-				ship.reset();
-				bullets.clear();
-				asteroids.clear();
-				asteroids.emplace_back();
-				asteroids.emplace_back();
-				break;
-			}
-			++a_idx;
-		}
-	}
-
-    return 0;
+    SpawnAsteroid();
+    SpawnAsteroid();
 }
 
+void AsteroidsGame::HandleInput(float ElapsedTime)
+{
+    static sf::Clock bulletClock;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        ship.rotate(ElapsedTime * -turning_rate);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        ship.rotate(ElapsedTime * turning_rate);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        ship.accelerate(ElapsedTime);
+    }
+
+    //Shooting bullets
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        if (bulletClock.getElapsedTime().asSeconds() >= fire_rate)
+        {
+            bullets.emplace_back(ship.getPosition(), ship.getRotation());
+            bulletClock.restart();
+        }
+    }
+}
+
+void AsteroidsGame::Update(float ElapsedTime)
+{
+    ship.update(ElapsedTime);
+    for (Asteroid& a : asteroids)
+    {
+        a.update(ElapsedTime);
+    }
+    for (Bullet& b : bullets)
+    {
+        b.update(ElapsedTime);
+    }
+    scoreboard.update(ElapsedTime);
+
+    HandleCollisions();
+}
+
+void AsteroidsGame::Render()
+{
+    Window.clear();
+    Window.draw(ship);
+    for (const auto &a : asteroids)
+        Window.draw(a);
+    for (const auto &b : bullets)
+        Window.draw(b);
+    Window.draw(scoreboard);
+    Window.display();
+}
+
+void AsteroidsGame::SpawnAsteroid()
+{
+    sf::Vector2f Velocity(Random::Get(-asteroid_max_velocity, asteroid_max_velocity),
+			 Random::Get(-asteroid_max_velocity, asteroid_max_velocity));
+    
+    //Create a safety radius around the player where the asteroid cannot spawn.
+    sf::Vector2f shipPos = ship.getPosition();
+    sf::Vector2f Position;
+	Position.x = static_cast<float>(Random::Get(0, width));
+	if (Position.x > shipPos.x - safety_radius && Position.x < shipPos.x + safety_radius)
+	{
+		float interval;
+		if (Random::Get(0, 1) == 0)
+		{
+			//"Top" half of circle
+			interval = sqrt(square(safety_radius) - square(Position.x - shipPos.x)) + shipPos.y;
+			Position.y = Random::Get(interval, static_cast<float>(height));
+		}
+		else
+		{
+			//"Bottom" half of circle
+			interval = -sqrt(square(safety_radius) - square(Position.x - shipPos.x)) + shipPos.y;
+			Position.y = Random::Get(0.0f, interval);
+		}
+	}
+	else
+	{
+		Position.y = static_cast<float>(Random::Get(0, height));
+	}
+    asteroids.emplace_back(Position,Velocity, asteroid_radius);
+}
+
+void AsteroidsGame::HandleCollisions()
+{
+    //Remove bullets that have left the scene
+    for (size_t i = 0; i < bullets.size();)
+    {
+        auto &pos = bullets[i].getPosition();
+        sf::Vector2u screenDimensions = Window.getSize();
+        if (pos.x < 0 || pos.x > screenDimensions.x || pos.y < 0 || pos.y > screenDimensions.y)
+        {
+            std::swap(bullets[i], bullets.back());
+            bullets.pop_back();
+        }
+        else
+            ++i;
+    }
+
+    //Collision Detection
+    for (size_t a_idx = 0; a_idx < asteroids.size();)
+    {
+        auto &a = asteroids[a_idx];
+        auto &a_pos = a.getPosition();
+        float a_radius = a.getRadius();
+        //Bullets && Asteroids
+        for (size_t b_idx = 0; b_idx < bullets.size();)
+        {
+            auto &b = bullets[b_idx];
+            auto &b_pos = b.getPosition();
+            if (distance_squared(a_pos, b_pos) < square(a_radius))
+            {
+                scoreboard.add(100);
+
+                //Remove bullets
+                std::swap(b, bullets.back());
+                bullets.pop_back();
+
+                //Split asteroid.
+                //Remove asteroid
+                std::vector<Asteroid> splitAsteroids = a.split();
+
+                std::swap(a, asteroids.back());
+                asteroids.pop_back();
+
+                for(Asteroid& a : splitAsteroids)
+                {
+                    asteroids.emplace_back(a);
+                }
+
+                if(asteroids.size() < 10)
+                {
+                    SpawnAsteroid();
+                }
+            }
+            else
+                ++b_idx;
+        }
+        //Ship && Asteroids
+        if (distance_squared(a_pos, ship.getPosition()) < square(a_radius))
+        {
+            //Game over / lose life
+            ship.reset();
+            bullets.clear();
+            asteroids.clear();
+            scoreboard.reset();
+            SpawnAsteroid();
+            SpawnAsteroid();
+            break;
+        }
+        ++a_idx;
+    }
+}

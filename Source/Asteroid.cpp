@@ -2,38 +2,12 @@
 #include "constants.h"
 #include "util.h"
 
-Asteroid::Asteroid()
-	:shape(asteroid_radius), 
-	velocity(Random::Get(-asteroid_max_velocity, asteroid_max_velocity),
-			 Random::Get(-asteroid_max_velocity, asteroid_max_velocity))
+Asteroid::Asteroid(sf::Vector2f Position, sf::Vector2f Velocity, float Radius)
+	: shape(Radius),
+	velocity(Velocity)
 {
-	setOrigin(asteroid_radius, asteroid_radius);
-	//setPosition(sf::Vector2f(static_cast<float>(RNG(0, width)()), static_cast<float>(RNG(0, height)())));
-
-	float x = static_cast<float>(Random::Get(0, width));
-	float y;
-	if (x > center_x - safety_radius && x < center_x + safety_radius)
-	{
-		float interval;
-		if (Random::Get(0, 1) == 0)
-		{
-			//"Top" half of circle
-			interval = sqrt(square(safety_radius) - square(x - center_x)) + center_y;
-			y = Random::Get(interval, static_cast<float>(height));
-		}
-		else
-		{
-			//"Bottom" half of circle
-			interval = -sqrt(square(safety_radius) - square(x - center_x)) + center_y;
-			y = Random::Get(0.0f, interval);
-		}
-	}
-	else
-	{
-		y = static_cast<float>(Random::Get(0, height));
-	}
-
-	setPosition(x, y);
+	setOrigin(Radius, Radius);
+	setPosition(Position);
 }
 
 void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -49,4 +23,32 @@ void Asteroid::update(const float elapsedTime)
 	pos.y += velocity.y * elapsedTime;
 	wrapPosition(pos);
 	setPosition(pos);
+}
+
+std::vector<Asteroid> Asteroid::split()
+{
+	std::vector<Asteroid> outAsteroids;
+	if(shape.getRadius() == asteroid_radius_smaller)
+	{
+		return outAsteroids;
+	}
+
+	double angle = toRadians(30);
+	sf::Vector2f velocityA;
+	velocityA.x = velocity.x*cos(angle) - velocity.y*sin(angle);
+	velocityA.y = velocity.x*sin(angle) + velocity.y*cos(angle);
+
+	angle = toRadians(-30);
+	//sf::Vector2f velocityB(magnitude*cos(angle),magnitude*sin(angle));
+	sf::Vector2f velocityB;
+	velocityB.x = velocity.x*cos(angle) - velocity.y*sin(angle);
+	velocityB.y = velocity.x*sin(angle) + velocity.y*cos(angle);
+
+	Asteroid A(getPosition(),velocityA, asteroid_radius_smaller);
+	Asteroid B(getPosition(),velocityB, asteroid_radius_smaller);
+
+	outAsteroids.push_back(A);
+	outAsteroids.push_back(B);
+	
+	return outAsteroids;
 }

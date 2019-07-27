@@ -2,7 +2,7 @@
 #include "constants.h"
 #include "util.h"
 #include <cmath>
-//angle in degrees
+
 Bullet::Bullet(const sf::Vector2f &pos, float degrees)
 	:line(sf::Vector2f(bullet_width, bullet_height)),
 	velocity(bullet_velocity * sin(toRadians(degrees)), bullet_velocity * -cos(toRadians(degrees)))

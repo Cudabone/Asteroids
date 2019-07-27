@@ -10,6 +10,7 @@ public:
 
 protected:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	
 private:
 	sf::RectangleShape line;
 	sf::Vector2f velocity;
