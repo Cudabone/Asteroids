@@ -1,9 +1,10 @@
 #include "ScoreBoard.h"
+#include "RootDirectory.h"
 #include <string>
 
 ScoreBoard::ScoreBoard()
 {
-    if(!Font.loadFromFile("../Resource/8bit.ttf"))
+    if(!Font.loadFromFile(RootDirectory + "/Resource/8bit.ttf"))
     {
 
     }

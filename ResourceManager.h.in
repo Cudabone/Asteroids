@@ -1,0 +1,7 @@
+#include <string>
+
+class ResourceManager
+{
+public:
+	const std::string RootDirectory = "@CMAKE_SOURCE_DIR@";
+};

@@ -33,16 +33,16 @@ std::vector<Asteroid> Asteroid::split()
 		return outAsteroids;
 	}
 
-	double angle = toRadians(30);
+	float angle = toRadians(30);
 	sf::Vector2f velocityA;
-	velocityA.x = velocity.x*cos(angle) - velocity.y*sin(angle);
-	velocityA.y = velocity.x*sin(angle) + velocity.y*cos(angle);
+	velocityA.x = velocity.x*cosf(angle) - velocity.y*sinf(angle);
+	velocityA.y = velocity.x*sinf(angle) + velocity.y*cosf(angle);
 
 	angle = toRadians(-30);
 	//sf::Vector2f velocityB(magnitude*cos(angle),magnitude*sin(angle));
 	sf::Vector2f velocityB;
-	velocityB.x = velocity.x*cos(angle) - velocity.y*sin(angle);
-	velocityB.y = velocity.x*sin(angle) + velocity.y*cos(angle);
+	velocityB.x = velocity.x*cosf(angle) - velocity.y*sinf(angle);
+	velocityB.y = velocity.x*sinf(angle) + velocity.y*cosf(angle);
 
 	Asteroid A(getPosition(),velocityA, asteroid_radius_smaller);
 	Asteroid B(getPosition(),velocityB, asteroid_radius_smaller);
