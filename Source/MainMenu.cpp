@@ -1,10 +1,11 @@
 #include "MainMenu.h"
 #include "constants.h"
+#include "RootDirectory.h"
 
 MainMenu::MainMenu(sf::RenderWindow& Window)
 : GameState(Window)
 {
-    if(!Font.loadFromFile("../Resource/8bit.ttf"))
+    if(!Font.loadFromFile(RootDirectory + "/Resource/8bit.ttf"))
     {
 
     }

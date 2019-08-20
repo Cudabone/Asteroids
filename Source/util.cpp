@@ -2,8 +2,7 @@
 #include "util.h"
 #include "constants.h"
 
-//Static members of RNG class
-
+//Static member of RNG class
 std::mt19937 Random::gen;
 
 void wrapPosition(sf::Vector2f &pos)
